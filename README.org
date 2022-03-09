@@ -1,5 +1,5 @@
 * Signal System
-** Made as a small hobby/curiousity project for me, as I've always wanted to develop an event/signal system from the ground up.
+- Made as a small hobby/curiousity project for me, as I've always wanted to develop an event/signal system from the ground up.
 * Features
 - Makes use of function pointers as callbacks for the signals to call
 - Custom lambda function expressions are supported

@@ -15,4 +15,5 @@ include_directories(SignalSystem
   src/
   )
 
-add_executable(SignalSystem ${SOURCES})
+add_library(SignalSystem STATIC ${SOURCES})
+#add_executable(SignalSystem ${SOURCES})
