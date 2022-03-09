@@ -1,6 +1,6 @@
 * Signal System
 ** Made as a small hobby/curiousity project for me, as I've always wanted to develop an event/signal system from the ground up.
 * Features
-** Makes use of function pointers as callbacks for the signals to call
-** Custom lambda function expressions are supported
-** Custom user data able to be passed in to listener functions through a dispatch call
+- Makes use of function pointers as callbacks for the signals to call
+- Custom lambda function expressions are supported
+- Custom user data able to be passed in to listener functions through a dispatch call
