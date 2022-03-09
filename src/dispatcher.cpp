@@ -30,9 +30,6 @@ void Dispatcher::Dispatch(const char* signal, void* userData, bool erase) {
         if (erase)
             Get().queue.erase(signal);
     }
-    else {
-        std::cout << "No signals matching '" << signal << "' in the queue" << std::endl;
-    }
 }
 
 void Dispatcher::DispatchAll() {
