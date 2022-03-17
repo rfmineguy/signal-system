@@ -3,4 +3,9 @@
 * Features
 - Makes use of function pointers as callbacks for the signals to call
 - Custom lambda function expressions are supported
-- Custom user data able to be passed in to listener functions through a dispatch call
+- Custom user data able to be passed in to listener functions through an Emit function call
+
+* Usage
+Dispatcher::Subscribe(function, "signal-name");
+
+Dispatcher::Emit("signal-name");
