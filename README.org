@@ -14,4 +14,4 @@ Dispatcher::Subscribe(function, "signal-name");
 
 Dispatcher::Emit("signal-name");
 
-** see src/main.cpp for examples
+- see src/main.cpp for examples
