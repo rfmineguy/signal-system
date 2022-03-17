@@ -2,15 +2,6 @@
 #include "dispatcher.h"
 #include <functional>
 
-struct ColData {
-    int type;
-    int x, y;
-};
-
-struct MousePressData {
-    int button;
-};
-
 struct AdvancementData {
     std::string id;
     std::string message;
@@ -22,11 +13,11 @@ struct ItemData {
 };
 
 struct Entity {
-    void(*onKeyPressed)(void*) = nullptr;
-    void(*onKeyReleased)(void*) = nullptr;
-    void(*onMousePressed)(void*) = nullptr;
-    void(*onMouseReleased)(void*) = nullptr;
-    void(*onCollission)(void*) = nullptr;
+    std::function<void(void*)> onKeyPressed = nullptr;
+    std::function<void(void*)> onKeyReleased = nullptr;
+    std::function<void(void*)> onMousePressed = nullptr;
+    std::function<void(void*)> onMouseReleased = nullptr;
+    std::function<void(void*)> onCollission = nullptr;
 };
 
 template<typename T>
@@ -46,7 +37,8 @@ class Player : public Entity {
         };
         std::function<void(void*)> aquireItem = [](void* itemData) {
             ItemData* data = (ItemData*)itemData;
-            std::cout << "Aquired " << data->count << " " << data->itemName << 's' << std::endl;
+            AdvancementData adData {"aquire_item", "You aquired an item!"};
+            Dispatcher::Emit("new_advancement", &adData);
         };
         std::function<void(void*)> openInventory = [this](void*) {
             AdvancementData adData{"open_inv", "You opened your inventory!"};
@@ -67,6 +59,8 @@ int main() {
     Dispatcher::Emit("open_inventory");
 
     ItemData item {"apple", 2};
+    Dispatcher::Emit("on_aquireitem", &item);
+    item.itemName = "apple";
     Dispatcher::Emit("on_aquireitem", &item);
 }
 
