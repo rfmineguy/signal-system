@@ -1,5 +1,6 @@
 #include <iostream>
 #include "dispatcher.h"
+#include <functional>
 
 struct ColData {
     int type;
@@ -10,48 +11,70 @@ struct MousePressData {
     int button;
 };
 
+struct AdvancementData {
+    std::string id;
+    std::string message;
+};
+
+struct ItemData {
+    std::string itemName;
+    int count;
+};
+
 struct Entity {
-    void(*onKeyPressed)(void *) = nullptr;
+    void(*onKeyPressed)(void*) = nullptr;
     void(*onKeyReleased)(void*) = nullptr;
-    void(*onMousePressed)(void*) = [](void* userData) {
-        MousePressData* data = (MousePressData*) userData;
-        std::cout << "Mouse button #" << data->button << " pressed" << std::endl;
-    };
+    void(*onMousePressed)(void*) = nullptr;
     void(*onMouseReleased)(void*) = nullptr;
     void(*onCollission)(void*) = nullptr;
 };
 
+template<typename T>
+bool vectorContains(const std::vector<T>& vec, T item);
+
+class Player : public Entity {
+    public:
+        std::function<void(void*)> onAdvancementAchieved = [this](void* advancementData) {
+            AdvancementData* data = (AdvancementData*) advancementData;
+            if (!vectorContains(aquiredAdvancements, data->id)) {
+                aquiredAdvancements.push_back(data->id);
+                std::cout << "Achieved advancement : " << data->id << ", " << data->message << std::endl;
+            }
+            else {
+                std::cout << "Already achieved that advancement : "  << data->id << std::endl;
+            }
+        };
+        std::function<void(void*)> aquireItem = [](void* itemData) {
+            ItemData* data = (ItemData*)itemData;
+            std::cout << "Aquired " << data->count << " " << data->itemName << 's' << std::endl;
+        };
+        std::function<void(void*)> openInventory = [this](void*) {
+            AdvancementData adData{"open_inv", "You opened your inventory!"};
+            Dispatcher::Emit("new_advancement", &adData);
+        };
+    private:
+        std::vector<std::string> aquiredAdvancements;
+};
+
 int main() {
-    Entity entity1, entity2;
-    entity1.onKeyPressed = [](void*) { std::cout << "Testing" << std::endl; };
-    entity1.onKeyReleased = [](void*) { std::cout << "Key released callback" << std::endl; };
+    Player player;
 
-    entity2.onKeyPressed = [](void*) { std::cout << "Entity2 pressed" << std::endl; };
-    entity2.onKeyReleased = [](void*) { std::cout << "Entity2 released" << std::endl; };
+    Dispatcher::Subscribe(player.openInventory, "open_inventory");
+    Dispatcher::Subscribe(player.onAdvancementAchieved, "new_advancement");
+    Dispatcher::Subscribe(player.aquireItem, "on_aquireitem");
 
-    entity2.onCollission = [](void* userData) {
-        if (userData) {
-            ColData* colData = (ColData*) userData;
-            std::cout << colData->type << std::endl;
-            std::cout << colData->x << ", " << colData->y << std::endl;
-        }
-        else {
-            std::cout << "userData is nullptr" << std::endl;
-        }
-    };
+    Dispatcher::Emit("open_inventory");
+    Dispatcher::Emit("open_inventory");
 
-    ColData data { 213, 20, 30 };
-    MousePressData mouseData { 1 };
-    for (int i = 0; i < 20; i++) {
-        Dispatcher::Enqueue(entity1.onKeyPressed, "key_pressed");
-        Dispatcher::Enqueue(entity1.onMousePressed, "mouse_pressed");
-        Dispatcher::Enqueue(entity2.onKeyPressed, "key_pressed");
-        Dispatcher::Enqueue(entity1.onKeyReleased, "key_released");
-        Dispatcher::Enqueue(entity2.onKeyReleased, "key_released");
-        Dispatcher::Enqueue(entity2.onCollission, "on_collision");
-        Dispatcher::Dispatch("key_pressed");
-        Dispatcher::Dispatch("key_released");
-        Dispatcher::Dispatch("on_collision", &data);
-        Dispatcher::Dispatch("mouse_pressed", &mouseData);
+    ItemData item {"apple", 2};
+    Dispatcher::Emit("on_aquireitem", &item);
+}
+
+template <typename T>
+bool vectorContains(const std::vector<T>& vec, T item) {
+    for (const T& val : vec) {
+        if (val == item)
+            return true;
     }
+    return false;
 }

@@ -2,19 +2,12 @@
 #include <map>
 #include <vector>
 
-struct DispatchData {
-
-};
-
 class Dispatcher {
     public:
         static Dispatcher& Get();
-        static void Enqueue(std::function<void(void*)>, const char*);
-        static void Dispatch(const char*, void* = nullptr, bool erase = true);
-        static void DebugQueue();
-    private:
-        static void DispatchAll();
+        static void Subscribe(std::function<void(void*)>, const char*);
+        static void Emit(const char*, void* = nullptr, int count = 1);
 
     private:
-        std::map<const char*, std::vector<std::function<void(void*)>>> queue;
+        std::map<const char*, std::vector<std::function<void(void*)>>> subscribedListeners;
 };
