@@ -5,6 +5,10 @@
 - Custom lambda function expressions are supported
 - Custom user data able to be passed in to listener functions through an Emit function call
 
+* Why?
+- This simple API enables the programmer to subscribe their functions to certain signal names
+- When a signal is emitted, every function attached to it is invoked
+
 * Usage
 Dispatcher::Subscribe(function, "signal-name");
 
