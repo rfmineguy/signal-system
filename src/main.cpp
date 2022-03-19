@@ -12,14 +12,6 @@ struct ItemData {
     int count;
 };
 
-struct Entity {
-    std::function<void(void*)> onKeyPressed = nullptr;
-    std::function<void(void*)> onKeyReleased = nullptr;
-    std::function<void(void*)> onMousePressed = nullptr;
-    std::function<void(void*)> onMouseReleased = nullptr;
-    std::function<void(void*)> onCollission = nullptr;
-};
-
 template<typename T>
 bool vectorContains(const std::vector<T>& vec, T item);
 
