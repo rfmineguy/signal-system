@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.19)
-project (SignalSystem)
+project (SignalSystemExec)
+project (SignalSystemLib)
 
 set (CMAKE_CXX_STANDARD_REQUIRED True)
 set (CMAKE_EXPORT_COMPILE_COMMANDS True)
@@ -11,9 +12,8 @@ set (SOURCES
   src/dispatcher.cpp
   )
 
-include_directories(SignalSystem
-  src/
-  )
+include_directories(SignalSystemExec src/)
+include_directories(SignalSystemLib src/)
 
-#add_library(SignalSystem STATIC ${SOURCES})
-add_executable(SignalSystem ${SOURCES})
+add_library(SignalSystemLib STATIC ${SOURCES})
+add_executable(SignalSystemExec ${SOURCES})
