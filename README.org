@@ -15,3 +15,7 @@ Dispatcher::Subscribe(function, "signal-name");
 Dispatcher::Emit("signal-name");
 
 - see src/main.cpp for examples
+
+#CMake Link Target
+- SignalSystem
+- target_link_libraries(<project_name> SignalSystem)
