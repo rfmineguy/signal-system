@@ -1,6 +1,6 @@
 #include <iostream>
 #include "dispatcher.h"
-#include <functional>
+#include "entity.h"
 
 struct AdvancementData {
     std::string id;
