@@ -41,11 +41,11 @@ class Player : public Entity {
 };
 
 int main() {
-    Player player;
+    //Player player;
 
-    Dispatcher::Subscribe(player.openInventory, "open_inventory");
-    Dispatcher::Subscribe(player.onAdvancementAchieved, "new_advancement");
-    Dispatcher::Subscribe(player.aquireItem, "on_aquireitem");
+    //Dispatcher::Subscribe(player.openInventory, "open_inventory");
+    //Dispatcher::Subscribe(player.onAdvancementAchieved, "new_advancement");
+    //Dispatcher::Subscribe(player.aquireItem, "on_aquireitem");
 
     Dispatcher::Emit("open_inventory");
     Dispatcher::Emit("open_inventory");
